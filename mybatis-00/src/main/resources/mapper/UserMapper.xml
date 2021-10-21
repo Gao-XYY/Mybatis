@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao/mapper接口-->
+<mapper namespace="com.gao.com.gao.mybatis.mapper.UserMapper">
+
+    <!--结果集映射resultMap-->
+    <!--resultMap里面id的值对应的是增删改查标签里面的resultMap引用的值
+        type的值为映射的类型-->
+    <resultMap id="UserMap" type="User">
+        <!--column数据库中的字段，property实体类中的属性-->
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pwd" property="password"/>
+    </resultMap>
+    <!--
+        resultMap元素是Mybatis中最重要最强大的元素
+        ResultMap的设计思想是，对于简单的语句根本不需要配置显式的结果映射，而对于复杂一点的语句
+        只需要描述他们的关系就行了。
+    -->
+
+
+
+    <!--这里的#{id}是UserMapper中的id-->
+    <select id="getUserById" resultMap="UserMap">
+        select * from mybatis.user where id = #{id};
+    </select>
+
+</mapper>

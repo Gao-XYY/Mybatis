@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <!--
+        diskStore: 为缓存路径，ehcache分为内存和磁盘两级，此属性定义磁盘的缓存位置。参数解释如下：
+        user.home - 用户主目录
+        user.dir  - 用户当前工作目录
+        java.io.tmpdir - 默认临时文件路径
+    -->
+    <diskStore path="./tmpdir/Tmp_EhCache"/>
+
+    <defaultCache
+            eternal="false"
+            maxElementsInMemory="10000"
+            overflowToDisk="false"
+            diskPersistent="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="259200"
+            memoryStoreEvictionPolicy="LRU"
+    />
+
+    <cache
+            name="cloud_user"
+            eternal="false"
+            maxElementsInMemory="5000"
+            overflowToDisk="false"
+            diskPersistent="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="1800"
+            memoryStoreEvictionPolicy="LRU"
+    />
+
+    <!--
+        defaultCache:默认缓存策略，当ehcache找不到定义的缓存时，则使用这个缓存策略。只能定义一个。
+    -->
+    <!--
+        name:缓存名称。
+        maxElementsInMemory:缓存最大数目
+        maxElementsOnDisk:硬盘最大缓存个数
+        eternal:对象是否永久有效，一但设置了，timeout将不起作用，
+        overflowToDisk:是否保存到磁盘，当系统宕机时
+    -->
+
+
+</ehcache>

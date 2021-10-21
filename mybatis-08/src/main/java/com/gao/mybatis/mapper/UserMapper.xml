@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTO Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gao.mybatis.mapper.UserMapper">
+
+    <!--
+        二级缓存
+            二级缓存也叫全局缓存，一级缓存作用域太低了，所以就诞生了二级缓存
+            基于namespace级别的缓存，一个命名空间，对应一个二级缓存
+            工作机制：
+                一个会话查询一条数据，这个数据就会被放在当前会话的一级缓存中；
+                如果当前会话关闭了，这个会话对应的一级缓存就没了，但是我们想要的是，会话关闭了一级
+                缓存中的数据被保存到二级缓存中
+                新的会话查询信息，就可以从二级缓存中获取内容
+                不同的mapper查出的数据会被保存在自己对应的缓存(map)中；
+
+
+        步骤：
+            1、开启全局缓存(在mybatis中配置)
+            2、在要使用二级缓存的Mapper中开启
+            也可以自定义一些参数
+            <cache eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+        问题：当直接用<cache/>的时候我们要将实体类序列化 否则就会报错
+
+    -->
+    <!--在当前mapper.xml中使用二级缓存-->
+    <!--<cache eviction="FIFO"-->
+            <!--flushInterval="60000"-->
+            <!--size="512"-->
+            <!--readOnly="true"/>-->
+
+    <!--ehCache使用-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <!--useCache=""可以开启和关闭缓存-->
+    <select id="queryUserById" resultType="user" useCache="true">
+        select * from user where id = #{id};
+    </select>
+
+    <update id="updateUser" parameterType="user">
+        update user set name = #{name}, pwd = #{pwd} where id = #{id}
+    </update>
+
+    <!--
+        总结：
+            只要开启二级缓存，在同一个Mapper下就有效
+            所有的数据都会先放在一级缓存中；
+            只有当会话提交，或者关闭的时候，才会提交到二级缓存中
+    -->
+
+</mapper>

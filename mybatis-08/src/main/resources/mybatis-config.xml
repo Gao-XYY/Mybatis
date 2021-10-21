@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTO Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--引入外部配置文件-->
+    <properties resource="db.properties"/>
+
+    <settings>
+        <!--标准日志工厂实现-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--是否开启自动驼峰命名规则(camel cose) 映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--显示的开启全局缓存-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--可以给实体类取别名-->
+    <typeAliases>
+        <package name="com.gao.mybatis.pojo"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <!--<property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>-->
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--每一个mapper.xml都需要在mybatis核心配置文件中注册！-->
+    <mappers>
+        <mapper class="com.gao.mybatis.mapper.UserMapper"/>
+
+    </mappers>
+</configuration>

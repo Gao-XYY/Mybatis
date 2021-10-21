@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao/mapper接口-->
+<mapper namespace="com.gao.com.gao.mybatis.mapper.UserMapper">
+    <!--这里的id绑定的是对应的方法 resultType 返回一个结果类型，resultMap返回一个集合-->
+    <select id="getUserList" resultType="com.gao.com.gao.mybatis.pojo.User">
+        select * from mybatis.user;
+    </select>
+    <!--这里的#{id}是UserMapper中的id-->
+    <select id="getUserById" parameterType="int" resultType="User">
+        select * from mybatis.user where id = #{id};
+    </select>
+
+    <insert id="addUser" parameterType="com.gao.com.gao.mybatis.pojo.User">
+        insert into mybatis.user (id, name, pwd) values (#{id}, #{name}, #{pwd});
+    </insert>
+    <!--parameterType类型是map则#{id}里面就可以不是usermapper里面的id-->
+    <update id="updateUser" parameterType="com.gao.com.gao.mybatis.pojo.User">
+        update mybatis.user set name = #{name}, pwd = #{pwd} where id = #{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from mybatis.user where id = #{id};
+    </delete>
+
+</mapper>

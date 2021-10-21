@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTO Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gao.mybatis.mapper.BlogMapper">
+
+    <insert id="addBlog" parameterType="blog">
+        insert into mybatis.blog(id, title, author, create_time, views)
+        values (#{id}, #{title}, #{author}, #{createTime}, #{views});
+    </insert>
+
+    <sql id="if-title-author">
+        <if test="title != null">
+            title = #{title},
+        </if>
+        <if test="author != null">
+            author = #{author}
+        </if>
+    </sql>
+
+    <select id="queryBlogIF" parameterType="map" resultType="blog">
+        <!--select * from mybatis.blog where title  = #{title} and author = #{author}-->
+        select * from mybatis.blog
+        <where>
+            <include refid="if-title-author"/>
+        </where>
+    </select>
+
+    <select id="queryBlogChoose" parameterType="map" resultType="blog">
+        select * from mybatis.blog
+        <where>
+            <choose>
+                <when test="title != null ">
+                    title = #{title}
+                </when>
+
+                <when test="author != null ">
+                    and author = #{author}
+                </when>
+                <otherwise>
+                    and views = #{views}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--我们现在传递一个万能的map， 这个map中可以存在一个集合 -->
+    <select id="queryBlogForeach" parameterType="map" resultType="blog">
+        select * from blog
+        <where>
+            <foreach collection="ids" item = "id" open="and (" close=")" separator="or">
+                id = #{id}
+            </foreach>
+        </where>
+
+    </select>
+
+    <update id="updateBlog" parameterType="map">
+        update mybatis.blog
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="author != null">
+                author = #{author}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--SQL片段
+        有时候，我们可能会将一些功能的部分抽取出来，方便复用
+        1、使用SQL标签抽取公共的部分
+        2、在需要使用的地方使用include标签引用即可
+
+        注意事项：
+        最好基于单表来定义SQL片段
+        不要存在where标签
+
+
+    -->
+
+</mapper>
